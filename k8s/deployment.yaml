@@ -61,7 +61,7 @@ kind: Deployment
 metadata:
   name: fake-shop
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: fake-shop
@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
         - name: fake-shop
-          image: 307575912485.dkr.ecr.us-east-1.amazonaws.com/eks-aula:latest
+          image: albuquerquefabio/kubedev-fake-shop:latest
           ports:
             - containerPort: 5000
           resources:
