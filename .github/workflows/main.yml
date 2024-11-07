@@ -27,7 +27,7 @@ jobs:
           file: ./src/Dockerfile
           tags:
             alexsilvarj/fake-shop:latest
-            #alexsilvarj/fake-shop:v${{ github.run_number }}
+            alexsilvarj/fake-shop:v${{ github.run_number }}
 
 
   cd:
