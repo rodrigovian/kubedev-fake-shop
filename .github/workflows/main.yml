@@ -25,9 +25,9 @@ jobs:
           context: ./src
           push: true
           file: ./src/Dockerfile
-          tags: 
+          tags:
             alexsilvarj/fake-shop:latest
-            alexsilvarj/fake-shop:v${{github.run_number}}
+            #alexsilvarj/fake-shop:v${{ github.run_number }}
 
 
   cd:
