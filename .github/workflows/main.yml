@@ -31,9 +31,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ci]
     steps:
-      - name: Autenticar na AWS
-        run: echo "Executando o comando aws configure"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Configurar o kubectl
-        run: echo "Executando o comando aws eks update-kubeconfig"
+        run: aws eks update-kubeconfig --name ${{vars.AWS_EKS_CLUSTER_NAME}} --region us-east-1
       - name: Deploy dos manifestos no Kubernetes
         run: echo "Executando o comando kubectl apply"
