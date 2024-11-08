@@ -4,6 +4,7 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -17,11 +18,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Construção da imagem Docker
-        run: echo "Executando o comando Docker Build"
-
-      - name: Envio da imagem Docker
-        run: echo "Executando o comando Docker Push"
+      - name: Construção e envio da imagem Docker
+        uses: docker/build-push-action@v6
+        with:
+          context: ./src
+          push: true
+          file: ./src/Dockerfile
+          tags: |
+            lfogaca34/fake-shop:latest
+            lfogaca34/fake-shop:v${{ github.run_number }}
 
   cd:
     runs-on: ubuntu-latest
@@ -36,7 +41,8 @@ jobs:
       - name: Deploy dos manifestos no Kubernetes
         run: echo "Executando o comando kubectl apply"
 
-        
+
+
 
          
     
