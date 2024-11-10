@@ -8,7 +8,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Obter o codigo da aplicaao
+      - name: Obter o codigo da aplicacao
         uses: actions/checkout@v4
 
       - name: Autenticar no Docker Hub
@@ -16,11 +16,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-      - name: Construção da Imagem Docker
-        run: echo "Executando Docker build"
-      - name: Envio da Imagem Docker
-        run: echo "Executando o comando Docker push"
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: user/app:latest
 
   cd:
     runs-on: ubuntu-latest
