@@ -8,7 +8,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Obter o codigo da aplicacao
+      - name: Obter o codigo da aplicaao
         uses: actions/checkout@v4
 
       - name: Autenticar no Docker Hub
@@ -16,12 +16,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push
+          
+      - name: Construcao e Envio da Imagem Docker
         uses: docker/build-push-action@v6
         with:
+          context: ./src
           push: true
-          tags: user/app:latest
+          file: ./src/Dockerfile
+          tags: |
+            jcdcjr/fake-shop:latest
+            jcdcjr/fake-shop:v${{ github.run_number }}
 
   cd:
     runs-on: ubuntu-latest
