@@ -1,5 +1,6 @@
 # Fake Shop
 
+This project were tested on AWS Environment using EKS and managed via WSL Kubectl using AWS CLI.
 
 ## Variável de Ambiente
 DB_HOST	=> Host do banco de dados PostgreSQL.
