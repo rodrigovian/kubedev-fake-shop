@@ -64,7 +64,7 @@ spec:
           - name: DB_PASSWORD
             value: Pg1234
           - name: DB_NAME
-            value: fackshop
+            value: fakeshop
           - name: FLASK_APP
             value: index.py
 ---
