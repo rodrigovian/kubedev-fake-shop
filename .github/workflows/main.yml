@@ -2,7 +2,7 @@ name: CI-CD
 
 on:
   push:
-    brenches: ["main"]
+    branches: ["main"]
   workflow_dispatch:
 jobs:
   ci:
@@ -17,7 +17,8 @@ jobs:
          
   cd:
     runs-on: ubuntu-latest
-    steps:
+    needs: [ci]
+    steps: 
       -  name: Autenticar na aws
          run: echo "Executando o comando aws configure"
       -  name: Construção o kubectl
