@@ -29,6 +29,10 @@ jobs:
   cd:
     runs-on: ubuntu-latest
     needs: [ci]
+    permissions:
+      id-token: write
+      contents: read
+      actions: read   
     steps: 
       -  name: Obter o código do projeto
          uses: actions/checkout@v4
@@ -43,6 +47,11 @@ jobs:
       -  name: Configurar o kubectl
          run: aws eks update-kubeconfig --name aula-eks
 
-      -  name: Deploy dos manifestos no kubernets
-         run: echo "Executando o comando kuberctl apply" 
+      - name: Deploy dos manifestos no kubernets
+        uses: Azure/k8s-deploy@v5
+        with:         
+         manifests: |
+            ./k8s/deployment.yaml     
+         images: |
+            fjschicosilva/fake-shop:v${{ github.run_number }}
         
