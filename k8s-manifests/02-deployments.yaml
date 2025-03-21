@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  postgres
+  namespace: default
+  labels:
+    app:  postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  postgres
+    spec:
+      containers:
+      - name:  postgres
+        image:  postgres:13.16
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 200m
+            memory: 200Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        livenessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+        - name: POSTGRES_USER
+          value: ecommerce
+        - name: POSTGRES_PASSWORD
+          value: Pg13.16
+        - name: POSTGRES_DB
+          value: ecommerce
+        ports:
+        - containerPort:  5432
+          name:  postgres
+      restartPolicy: Always
+      imagePullPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  fakeshop
+  namespace: default
+  labels:
+    app:  fakeshop
+spec:
+  selector:
+    matchLabels:
+      app: fakeshop
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  fakeshop
+    spec:
+      containers:
+      - name:  fakeshop
+        image:  rodrigovian/kubedev-fakeshop:v1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PORT
+          value: '5432'
+        - name: DB_USER
+          value: ecommerce
+        - name: DB_PASSWORD
+          value: Pg13.16
+        - name: DB_NAME
+          value: ecommerce
+        - name: FLASK_APP
+          value: index.py
+        ports:
+        - containerPort:  5000
+          name:  fakeshop
+      restartPolicy: Always
